@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Community Event Portal</title>
+
+<style>
+body { font-family: Arial; margin: 0; }
+nav { background: #333; padding: 10px; }
+nav a { color: white; margin: 10px; text-decoration: none; }
+#welcomeBanner { background: blue; color: white; padding: 15px; }
+.highlight { background: yellow; }
+table { width: 100%; }
+img.gallery { border: 2px solid black; width: 150px; height: 100px; }
+form { padding: 20px; background: #f2f2f2; }
+input, select, textarea { display: block; margin: 10px 0; padding: 5px; }
+</style>
+
+<script>
+function showConfirmation() {
+document.getElementById("outputMsg").value = "Registration Successful";
+}
+
+function validatePhone(el) {
+if (el.value.length < 10) alert("Invalid phone number");
+}
+
+function showFee(sel) {
+document.getElementById("fee").innerText = "Fee: " + sel.value;
+localStorage.setItem("eventType", sel.value);
+}
+
+function countChars(el) {
+document.getElementById("charCount").innerText = el.value.length;
+}
+
+function enlarge(img) {
+img.style.width = "300px";
+img.style.height = "200px";
+}
+
+function clearStorage() {
+localStorage.clear();
+sessionStorage.clear();
+}
+
+function loadPref() {
+let val = localStorage.getItem("eventType");
+if (val) document.getElementById("eventType").value = val;
+}
+
+function findLocation() {
+navigator.geolocation.getCurrentPosition(
+(pos) => {
+document.getElementById("location").innerText =
+"Lat: " + pos.coords.latitude + " Lon: " + pos.coords.longitude;
+},
+(err) => {
+alert("Error: " + err.message);
+},
+{ enableHighAccuracy: true, timeout: 5000 }
+);
+}
+
+window.onbeforeunload = function() {
+return "Form not submitted";
+};
+</script>
+
+</head>
+
+<body onload="loadPref()">
+
+<nav>
+<a href="#home">Home</a>
+<a href="#events">Events</a>
+<a href="#contact">Contact</a>
+<a href="help.html" target="_blank">Help</a>
+</nav>
+
+<div id="home">
+<div id="welcomeBanner">
+Welcome User <span style="color:red;font-weight:bold;">Special Offer!</span>
+</div>
+</div>
+
+<div id="events">
+<h2 class="highlight">Event Gallery</h2>
+
+<table>
+<tr>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Music Fest</td>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Food Carnival</td>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Art Show</td>
+</tr>
+<tr>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Sports Day</td>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Book Fair</td>
+<td><img src="https://via.placeholder.com/150" class="gallery" ondblclick="enlarge(this)"><br>Tech Expo</td>
+</tr>
+</table>
+
+<h2>Register Event</h2>
+
+<form onsubmit="showConfirmation(); return false;">
+<input type="text" placeholder="Name" required autofocus>
+<input type="email" placeholder="Email" required>
+<input type="date" required>
+<select id="eventType" onchange="showFee(this)">
+<option value="Free">Free Event</option>
+<option value="10$">Paid Event</option>
+</select>
+<p id="fee"></p>
+<textarea placeholder="Message"></textarea>
+<input type="text" placeholder="Phone" onblur="validatePhone(this)">
+<button type="submit" onclick="showConfirmation()">Submit</button>
+<output id="outputMsg"></output>
+</form>
+
+<h2>Feedback</h2>
+<textarea onkeyup="countChars(this)"></textarea>
+<p>Characters: <span id="charCount">0</span></p>
+
+<h2>Video Invite</h2>
+<video width="300" controls oncanplay="alert('Video ready')">
+<source src="movie.mp4" type="video/mp4">
+</video>
+
+<br><br>
+<button onclick="clearStorage()">Clear Preferences</button>
+
+<h2>Find Nearby Events</h2>
+<button onclick="findLocation()">Find Nearby Events</button>
+<p id="location"></p>
+
+</div>
+
+<div id="contact">
+<h2>Contact</h2>
+<p>Email: support@example.com</p>
+</div>
+
+</body>
+</html>
