@@ -1,4 +1,4 @@
-public class Program06_DataTypeDemo {
+public class DataTypeDemo {
     public static void main(String[] args) {
 
         int age = 20;
